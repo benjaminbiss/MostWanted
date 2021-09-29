@@ -98,11 +98,10 @@ function searchByName(people) {
 }
 
 //unfinished function to search through an array of people to find matching eye colors. Use searchByName as reference.
-function searchByEyeColor(people) {}
 
 function searchTrait(trait, input, people) {
   let filterArray = people.filter(function (object) {
-    if (object[trait] === input) {
+    if (String(object[trait]) === input) {
       return true;
     } else {
       return false;
@@ -144,7 +143,7 @@ function getTraitValues(arr) {
   };
   let values = {};
   for (let i = 0; i < arr.length; i++) {
-    const message = `Enter the value for ${keys[i]}`;
+    const message = `Enter the value for ${keys[arr[i] - 1]}`;
     let value = promptFor(message, autoValid);
     switch (arr[i]) {
       case "1":
@@ -175,7 +174,11 @@ function getTraitValues(arr) {
 function searchMultiTrait(people) {
   let traits = getSearchTraits();
   let traitValues = getTraitValues(traits);
-  console.log(traitValues);
+  let results = people;
+  for (const key in traitValues) {
+    results = searchTrait(key, traitValues[key], results);
+  }
+  return results;
 }
 
 //#endregion

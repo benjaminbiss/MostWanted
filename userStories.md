@@ -1,6 +1,6 @@
 # User Stories
 
-## As a user, I want to be able to search for someone based on a single criterion //NOTSTARTED
+## As a user, I want to be able to search for someone based on a single criterion //COMPLETE
 
 - Solution Steps:
   1. Filter dataset; use criteria to build array for objects that match search criterion
@@ -8,7 +8,7 @@
 
 You should be able to find and return a list of people who match the search
 
-## As a user, I want to be able to search for someone based on multiple traits (up to a maximum of five criteria at once) //NOTSTARTED
+## As a user, I want to be able to search for someone based on multiple traits (up to a maximum of five criteria at once) //COMPLETE
 
 - Solution Steps:
   1. Prompt user to select traits to use; validate
