@@ -15,7 +15,7 @@ function app(people){
       searchResults = searchByName(people);
       break;
     case 'no':
-      // TODO: search by traits
+      searchResults = searchTrait("height", 71, people)[0];
       break;
       default:
     app(people); // restart app
@@ -23,7 +23,7 @@ function app(people){
   }
   
   // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
-  mainMenu(searchResults[0], people);
+  mainMenu(searchResults, people);
 }
 
 // Menu function to call once you find who you are looking for
@@ -78,7 +78,7 @@ function searchByName(people){
       return false;
     }
   })
-  // TODO: find the person single person object using the name they entered.
+  foundPerson = foundPerson[0];
   return foundPerson;
 }
 
@@ -87,8 +87,17 @@ function searchByEyeColor(people){
 
 }
 
-//TODO: add other trait filter functions here.
-
+function searchTrait(trait, input, people) {
+  let filterArray = people.filter(function(object){
+    if (object[trait] === input) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  })
+  return filterArray;
+}
 
 
 //#endregion
