@@ -126,13 +126,57 @@ function getSearchTraits() {
   let input;
   while (input != 7) {
     input = promptFor(message, validateTraitNumbers);
-    if (!traits.includes(input)) {
+    if (!traits.includes(input) && input != 7) {
       traits.push(input);
     }
   }
+  return traits.sort((a, b) => a - b);
 }
 
-function searchMultiTrait(people) {}
+function getTraitValues(arr) {
+  let keys = {
+    0: "gender",
+    1: "dob",
+    2: "height",
+    3: "weight",
+    4: "eyeColor",
+    5: "occupation",
+  };
+  let values = {};
+  for (let i = 0; i < arr.length; i++) {
+    const message = `Enter the value for ${keys[i]}`;
+    let value = promptFor(message, autoValid);
+    switch (arr[i]) {
+      case "1":
+        values.gender = value;
+        break;
+      case "2":
+        values.dob = value;
+        break;
+      case "3":
+        values.height = value;
+        break;
+      case "4":
+        values.weight = value;
+        break;
+      case "5":
+        values.eyeColor = value;
+        break;
+      case "6":
+        values.occupation = value;
+        break;
+      default:
+        break;
+    }
+  }
+  return values;
+}
+
+function searchMultiTrait(people) {
+  let traits = getSearchTraits();
+  let traitValues = getTraitValues(traits);
+  console.log(traitValues);
+}
 
 //#endregion
 
