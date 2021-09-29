@@ -15,7 +15,13 @@ function app(people){
       searchResults = searchByName(people);
       break;
     case 'no':
-      searchResults = searchTrait("height", 71, people)[0];
+      searchResults = searchTrait("height", 71, people);
+      if (searchResults.length === 1) {
+        searchResults = searchResults[0];
+      }
+      else {
+        alert("Multiple people.");
+      }
       break;
       default:
     app(people); // restart app
