@@ -15,20 +15,20 @@ function app(people) {
   switch (searchType) {
     case "yes":
       searchResults = searchByName(people);
+      return searchResults;
       break;
     case "no":
-      searchResults = searchTrait("height", 71, people);
+      searchResults = searchTrait("height", "71", people);
       if (searchResults.length === 1) {
         searchResults = searchResults[0];
       } else {
         displayPeople(searchResults);
       }
-      break;
+      break;  
     default:
       app(people); // restart app
       break;
   }
-
   // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
   mainMenu(searchResults, people);
 }
@@ -59,7 +59,8 @@ function mainMenu(person, people) {
       // TODO: get person's family
       break;
     case "descendants":
-      // TODO: get person's descendants
+      let searchResultsID = searchResults.id;
+      displayDecendants(searchResultsID);
       break;
     case "restart":
       app(people); // restart
@@ -103,6 +104,12 @@ function searchTrait(trait, input, people) {
   let filterArray = people.filter(function (object) {
     if (String(object[trait]) === input) {
       return true;
+    }
+    else if (Array.isArray(object[trait])) {
+      let numInput = input;
+      if (object[trait].includes(numInput)) {
+        return true;
+      }
     } else {
       return false;
     }
@@ -181,20 +188,17 @@ function searchMultiTrait(people) {
   return results;
 }
 
-function allDecendants() {
-  let children = searchTrait(parents, String(object.id), people);
-  for (const object in children) {
-    let descendants = descendants.push(object);
-  }
+function allDecendants(id, people) {
+  let children = searchTrait("parents", id, people);
   if (children.length !== 0) {
-    return searchTrait(parents, String(object.id), people);
+    return allDecendants(id, people);
   } else {
-    return descendants;
+    return children;
   }
 }
 
-function displayDecendants() {
-  let descendants = allDecendants();
+function displayDecendants(id, people) {
+  let descendants = allDecendants(id, people);
   for (const object in descendants) {
     let arrayNames = arrayNames.push(object.firstName + ' ' + object.lastName);
   }
