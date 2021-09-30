@@ -181,7 +181,7 @@ function searchMultiTrait(people) {
   return results;
 }
 
-function allDesecendants() {
+function allDecendants() {
   let children = searchTrait(parents, String(object.id), people);
   for (const object in children) {
     let descendants = descendants.push(object);
@@ -194,7 +194,7 @@ function allDesecendants() {
 }
 
 function displayDecendants() {
-  let descendants = allDesecendants();
+  let descendants = allDecendants();
   for (const object in descendants) {
     let arrayNames = arrayNames.push(object.firstName + ' ' + object.lastName);
   }
