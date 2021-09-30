@@ -18,7 +18,7 @@ You should be able to find and return a list of people who match the search
 
 i.e., if you search for Gender: male and Eye Color: blue, you should get back a list of people who match the search. In this case, it will be only people who are male with blue eyes
 
-## As a user, I want to be able to look up someone’s information after I find them with the program (display values for the various traits of the found person) //NOTSTARTED
+## As a user, I want to be able to look up someone’s information after I find them with the program (display values for the various traits of the found person) //COMPLETE
 
 - Solution Steps:
   1. Prompt user for ID of found person; validate

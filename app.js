@@ -129,8 +129,7 @@ function searchTrait(trait, input, people) {
       return true;
     }
     else if (Array.isArray(object[trait])) {
-      let numInput = input;
-      if (object[trait].includes(numInput)) {
+      if (object[trait].includes(input)) {
         return true;
       }
     } else {
