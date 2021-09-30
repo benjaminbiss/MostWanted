@@ -64,7 +64,7 @@ function mainMenu(person, people) {
       break;
     case "descendants":
       let searchResultsID = person.id;
-      displayDecendants(searchResultsID);
+      displayDecendants(searchResultsID, people);
       break;
     case "restart":
       app(people); // restart
@@ -210,20 +210,18 @@ function searchMultiTrait(people) {
   return results;
 }
 
-function allDecendants(id, people) {
+function descendants(id, people) {
   let children = searchTrait("parents", id, people);
-  if (children.length !== 0) {
-    return allDecendants(id, people);
-  } else {
-    return children;
+  for (let i = 0; i < children.length; i++) {
+    let grandchildren = descendants(children[i].id, people);
+    children = [...children, ...grandchildren];
   }
+  return children;
 }
 
 function displayDecendants(id, people) {
-  let descendants = allDecendants(id, people);
-  for (const object in descendants) {
-    let arrayNames = arrayNames.push(object.firstName + ' ' + object.lastName);
-  }
+  let allDescendants = descendants(id, people);
+  console.log(allDescendants);
 }
 
 //#endregion
