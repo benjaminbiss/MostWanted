@@ -15,14 +15,18 @@ function app(people) {
   switch (searchType) {
     case "yes":
       searchResults = searchByName(people);
-      return searchResults;
       break;
     case "no":
-      searchResults = searchTrait("height", "71", people);
+      searchResults = singleSearchTrait(people);
       if (searchResults.length === 1) {
         searchResults = searchResults[0];
-      } else {
-        displayPeople(searchResults);
+      } 
+      else {
+        while (searchResults.length > 1) {
+          displayPeople(searchResults);
+          searchResults = singleSearchTrait(searchResults);
+        }
+        searchResults = searchResults[0];
       }
       break;  
     default:
@@ -59,7 +63,7 @@ function mainMenu(person, people) {
       // TODO: get person's family
       break;
     case "descendants":
-      let searchResultsID = searchResults.id;
+      let searchResultsID = person.id;
       displayDecendants(searchResultsID);
       break;
     case "restart":
@@ -100,9 +104,28 @@ function searchByName(people) {
 
 //unfinished function to search through an array of people to find matching eye colors. Use searchByName as reference.
 
+function singleSearchTrait(people) {
+  let trait = promptFor("would you like to search by:\ngender\ndob\nheight\nweight\neyeColor\noccupation", autoValid);
+  let input = promptFor("Enter a value:", autoValid);
+  let filterArray = people.filter(function (object) {
+    if (String(object[trait]) === String(input)) {
+      return true;
+    }
+    else if (Array.isArray(object[trait])) {
+      let numInput = input;
+      if (object[trait].includes(numInput)) {
+        return true;
+      }
+    } else {
+      return false;
+    }
+  });
+  return filterArray;
+}
+
 function searchTrait(trait, input, people) {
   let filterArray = people.filter(function (object) {
-    if (String(object[trait]) === input) {
+    if (String(object[trait]) === String(input)) {
       return true;
     }
     else if (Array.isArray(object[trait])) {
