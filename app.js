@@ -181,6 +181,25 @@ function searchMultiTrait(people) {
   return results;
 }
 
+function allDesecendants() {
+  let children = searchTrait(parents, String(object.id), people);
+  for (const object in children) {
+    let descendants = descendants.push(object);
+  }
+  if (children.length !== 0) {
+    return searchTrait(parents, String(object.id), people);
+  } else {
+    return descendants;
+  }
+}
+
+function displayDecendants() {
+  let descendants = allDesecendants();
+  for (const object in descendants) {
+    let arrayNames = arrayNames.push(object.firstName + ' ' + object.lastName);
+  }
+}
+
 //#endregion
 
 //Display functions.
