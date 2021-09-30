@@ -60,11 +60,11 @@ function mainMenu(person, people) {
       alert(displayPerson(person));
       break;
     case "family":
-      // TODO: get person's family
+      displayRelatives(person, people);
       break;
     case "descendants":
-      let searchResultsID = person.id;
-      displayDecendants(searchResultsID, people);
+      let personID = person.id;
+      displayDecendants(personID, people);
       break;
     case "restart":
       app(people); // restart
@@ -211,6 +211,33 @@ function searchMultiTrait(people) {
   return results;
 }
 
+
+
+function displayRelatives(person, people) {
+  let allRelatives = {};
+  let spouse = searchTrait("currentSpouse", person.id, people);
+  allRelatives.currentSpouse = spouse.firstName + " " + spouse.lastName;
+  allRelatives.parents = [];
+  allRelatives.siblings = [];
+  for (let i = 0; i < person.parents.length; i++) {
+    let parent = searchTrait("id", person.parents[i], people)[0];
+    allRelatives.parents.push(parent.firstName + " " + parent.lastName);
+    let siblings = searchTrait("parents", person.parents[i], people);
+    for (let j = 0; j < siblings.length; j++) {
+      if (!allRelatives.siblings.includes(siblings[j].firstName + " " + siblings[j].lastName)) {
+        allRelatives.siblings.push(siblings[j].firstName + " " + siblings[j].lastName); 
+      }
+    }
+  }
+  console.log(allRelatives);
+  return allRelatives;
+}
+
+// function displayRelatives(person, people) {
+//   let result = getRelatives(person, people);
+//   alert(result.currentSpouse + '\n' + [...result.parents] + '\n' + [...result.siblings]);
+// }
+
 function descendants(id, people) {
   let children = searchTrait("parents", id, people);
   for (let i = 0; i < children.length; i++) {
@@ -222,7 +249,7 @@ function descendants(id, people) {
 
 function displayDecendants(id, people) {
   let allDescendants = descendants(id, people);
-  console.log(allDescendants);
+  return allDescendants;
 }
 
 //#endregion
