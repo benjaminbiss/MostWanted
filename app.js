@@ -215,7 +215,7 @@ function searchMultiTrait(people) {
 
 function displayRelatives(person, people) {
   let allRelatives = {};
-  let spouse = searchTrait("currentSpouse", person.id, people);
+  let spouse = searchTrait("currentSpouse", person.id, people)[0];
   allRelatives.currentSpouse = spouse.firstName + " " + spouse.lastName;
   allRelatives.parents = [];
   allRelatives.siblings = [];
