@@ -127,7 +127,7 @@ function searchTrait(trait, input, people) {
     if (String(object[trait]) === String(input)) {
       return true;
     } else if (Array.isArray(object[trait])) {
-      if (object[trait].includes(input)) {
+      if (object[trait].includes(parseInt(input))) {
         return true;
       }
     } else {
@@ -374,8 +374,25 @@ function generatePersonData(id, people) {
   document.getElementById("info").innerText = info;
   document.getElementById(
     "family"
-  ).innerText = `${family.parents}\n${family.siblings}\n${family.spouse}`;
-  console.log(info, family, descendants);
+  ).innerText = `${family.parents}, ${family.siblings}, ${family.spouse}`;
+  if (descendants.length > 0) {
+    var text = "";
+    for (const name of descendants) {
+      text += `${name.firstName} ${name.lastName}, `
+    } 
+    text = text.trim();
+    text = text.substr(0, text.length - 1);
+} else {
+  text = 'None'
+}
+  document.getElementById("descendants").innerText = text;
 }
 
-const resetUI = () => (document.getElementById("people").innerHTML = "");
+
+function resetUI() {
+  document.getElementById("info").innerText = '';
+  document.getElementById("family").innerText = '';
+  document.getElementById("descendants").innerText = '';
+  document.getElementById("people").innerHTML = "";
+}
+
