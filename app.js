@@ -28,6 +28,7 @@ function app(people) {
     case "4":
       break;
   }
+  console.log(dataFiltered);
   if (dataFiltered) {
     generateList(dataFiltered);
   }
@@ -101,8 +102,11 @@ function searchByName(people) {
 
 function searchSingleTrait(people) {
   let trait = getSearchTraits(1);
-  let value = getTraitValues(trait)[0];
-  return searchTrait(trait[0], value, people);
+  let value = getTraitValues(trait);
+  for (const key in value) {
+    trait = key;
+  }
+  return searchTrait(trait, value[trait], people);
 }
 
 function searchTrait(trait, input, people) {
@@ -196,8 +200,7 @@ function searchMultiTrait(people) {
 
 function getRelatives(person, people) {
   let allRelatives = {};
-  let spouse = searchTrait("currentSpouse", person.id, people);
-  console.log(spouse);
+  let spouse = searchTrait("currentSpouse", person.id, people)[0];
   if (spouse) {
     allRelatives.currentSpouse = spouse.firstName + " " + spouse.lastName;
   }
@@ -235,7 +238,6 @@ function getFamily(person, people) {
     result.siblings.length > 0 ? [...result.siblings] : "None"
   }`;
   return family;
-  //   alert(spouse + "\n" + parents + "\n" + siblings);
 }
 
 function getDescendants(id, people) {
