@@ -79,11 +79,24 @@ function mainMenu(person, people) {
 //Ideally you will have a function for each trait.
 /////////////////////////////////////////////////////////////////
 //#region
+function autoCapFirst(str) {
+  const chars = str.split("");
+  const c1 = chars[0].toUpperCase();
+  const c2 = chars.slice(1);
+  for (let i = 0; i < c2.length; i++) {
+    c2[i] = c2[i].toLowerCase();
+  }
+  return c1 + c2.join("");
+}
 
 //nearly finished function used to search through an array of people to find matching first and last name and return a SINGLE person object.
 function searchByName(people) {
-  let firstName = promptFor("What is the person's first name?", autoValid);
-  let lastName = promptFor("What is the person's last name?", autoValid);
+  let firstName = autoCapFirst(
+    promptFor("What is the person's first name?", autoValid)
+  );
+  let lastName = autoCapFirst(
+    promptFor("What is the person's last name?", autoValid)
+  );
 
   let foundPerson = people.filter(function (potentialMatch) {
     if (
