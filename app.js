@@ -20,15 +20,14 @@ function app(people) {
       searchResults = singleSearchTrait(people);
       if (searchResults.length === 1) {
         searchResults = searchResults[0];
-      } 
-      else {
+      } else {
         while (searchResults.length > 1) {
           displayPeople(searchResults);
           searchResults = singleSearchTrait(searchResults);
         }
         searchResults = searchResults[0];
       }
-      break;  
+      break;
     default:
       app(people); // restart app
       break;
@@ -105,13 +104,15 @@ function searchByName(people) {
 //unfinished function to search through an array of people to find matching eye colors. Use searchByName as reference.
 
 function singleSearchTrait(people) {
-  let trait = promptFor("would you like to search by:\ngender\ndob\nheight\nweight\neyeColor\noccupation", autoValid);
+  let trait = promptFor(
+    "would you like to search by:\ngender\ndob\nheight\nweight\neyeColor\noccupation",
+    autoValid
+  );
   let input = promptFor("Enter a value:", autoValid);
   let filterArray = people.filter(function (object) {
     if (String(object[trait]) === String(input)) {
       return true;
-    }
-    else if (Array.isArray(object[trait])) {
+    } else if (Array.isArray(object[trait])) {
       let numInput = input;
       if (object[trait].includes(numInput)) {
         return true;
@@ -127,10 +128,8 @@ function searchTrait(trait, input, people) {
   let filterArray = people.filter(function (object) {
     if (String(object[trait]) === String(input)) {
       return true;
-    }
-    else if (Array.isArray(object[trait])) {
-      let numInput = input;
-      if (object[trait].includes(numInput)) {
+    } else if (Array.isArray(object[trait])) {
+      if (object[trait].includes(input)) {
         return true;
       }
     } else {
@@ -211,12 +210,12 @@ function searchMultiTrait(people) {
   return results;
 }
 
-
-
-function displayRelatives(person, people) {
+function getRelatives(person, people) {
   let allRelatives = {};
   let spouse = searchTrait("currentSpouse", person.id, people)[0];
-  allRelatives.currentSpouse = spouse.firstName + " " + spouse.lastName;
+  if (spouse) {
+    allRelatives.currentSpouse = spouse.firstName + " " + spouse.lastName;
+  }
   allRelatives.parents = [];
   allRelatives.siblings = [];
   for (let i = 0; i < person.parents.length; i++) {
@@ -224,19 +223,27 @@ function displayRelatives(person, people) {
     allRelatives.parents.push(parent.firstName + " " + parent.lastName);
     let siblings = searchTrait("parents", person.parents[i], people);
     for (let j = 0; j < siblings.length; j++) {
-      if (!allRelatives.siblings.includes(siblings[j].firstName + " " + siblings[j].lastName)) {
-        allRelatives.siblings.push(siblings[j].firstName + " " + siblings[j].lastName); 
+      if (
+        !allRelatives.siblings.includes(
+          siblings[j].firstName + " " + siblings[j].lastName
+        )
+      ) {
+        allRelatives.siblings.push(
+          siblings[j].firstName + " " + siblings[j].lastName
+        );
       }
     }
   }
-  console.log(allRelatives);
   return allRelatives;
 }
 
-// function displayRelatives(person, people) {
-//   let result = getRelatives(person, people);
-//   alert(result.currentSpouse + '\n' + [...result.parents] + '\n' + [...result.siblings]);
-// }
+function displayRelatives(person, people) {
+  let result = getRelatives(person, people);
+  const spouse = `Spouse: ${result.currentSpouse || "None"}`
+  const parents = `Parents: ${result.parents.length > 0 ? [...result.parents] : "None"}`
+  const siblings = `Siblings: ${result.siblings.length > 0 ? [...result.siblings] : "None"}`
+  alert(spouse + '\n' + parents + '\n' + siblings);
+}
 
 function descendants(id, people) {
   let children = searchTrait("parents", id, people);
@@ -300,7 +307,8 @@ function displayPerson(person) {
 function promptFor(question, valid) {
   let isValid;
   do {
-    var response = prompt(question).trim();
+    var response = prompt(question)
+    response = response ? response.trim() : 'poop'
     isValid = valid(response);
   } while (response === "" || isValid === false);
   return response;
