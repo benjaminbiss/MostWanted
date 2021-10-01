@@ -16,10 +16,10 @@ function app(people) {
   let searchType = promptFor(message, isNumber1To3);
   let searchResults;
   switch (searchType) {
-    case 1:
+    case "1":
       searchResults = searchByName(people);
       break;
-    case 2:
+    case "2":
       searchResults = singleSearchTrait(people);
       while (searchResults.length > 1) {
         displayPeople(searchResults);
@@ -27,6 +27,8 @@ function app(people) {
         searchResults = searchResults[0];
       }
       break;
+    case "3":
+      searchResults = searchMultiTrait(people);
     default:
       app(people); // restart app
       break;
@@ -339,7 +341,7 @@ function autoValid(input) {
 function customValidation(input) {}
 
 function isNumber1To3(input) {
-  return input <= 3 && input >= 1 ? true : false;
+  return parseInt(input) <= 3 && parseInt(input) >= 1 ? true : false;
 }
 
 function validateTraitNumbers(input) {
