@@ -1,6 +1,6 @@
 # User Stories
 
-## As a user, I want to be able to search for someone based on a single criterion //COMPLETE
+## As a user, I want to be able to search for someone based on a single criterion
 
 - Solution Steps:
   1. Filter dataset; use criteria to build array for objects that match search criterion
@@ -8,7 +8,7 @@
 
 You should be able to find and return a list of people who match the search
 
-## As a user, I want to be able to search for someone based on multiple traits (up to a maximum of five criteria at once) //COMPLETE
+## As a user, I want to be able to search for someone based on multiple traits (up to a maximum of five criteria at once)
 
 - Solution Steps:
   1. Prompt user to select traits to use; validate
@@ -18,21 +18,21 @@ You should be able to find and return a list of people who match the search
 
 i.e., if you search for Gender: male and Eye Color: blue, you should get back a list of people who match the search. In this case, it will be only people who are male with blue eyes
 
-## As a user, I want to be able to look up someone’s information after I find them with the program (display values for the various traits of the found person) //COMPLETE
+## As a user, I want to be able to look up someone’s information after I find them with the program (display values for the various traits of the found person)
 
 - Solution Steps:
   1. Prompt user for ID of found person; validate
   2. Loop dataset, find object by ID
   3. Return object
 
-## As a user, after locating a person, I want to see only that person’s descendants (display the names of the descendants) //NOTSTARTED
+## As a user, after locating a person, I want to see only that person’s descendants (display the names of the descendants)
 
 - Solution Steps:
   1. Prompt user for ID of found person; validate
   2. Loop dataset, find object(s) which parent property contains ID
   3. Return object(s) first and last names as an array? maybe
 
-## As a user, after locating a person, I want to see only that person’s immediate family members, displaying the names of the family members and their relation to the found person //NOTSTARTED
+## As a user, after locating a person, I want to see only that person’s immediate family members, displaying the names of the family members and their relation to the found person
 
 - Solution Steps:
   1. Prompt user for ID of found person; validate
@@ -42,4 +42,4 @@ i.e., if you search for Gender: male and Eye Color: blue, you should get back a 
 i.e., parents, spouse, siblings
 **Bonus**
 
-## As a user, after locating a person, I want to see only that person’s descendants (display the names of the descendants), using recursion //NOTSTARTED
+## As a user, after locating a person, I want to see only that person’s descendants (display the names of the descendants), using recursion

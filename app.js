@@ -7,24 +7,23 @@
 
 // app is the function called to start the entire application
 function app(people) {
-  let searchType = promptFor(
-    "Do you know the name of the person you are looking for? Enter 'yes' or 'no'",
-    yesNo
-  ).toLowerCase();
+  let message = `
+    What type of search do you want to do?
+    1: Search by name
+    2: Search by single trait
+    3: Search by multiple traits
+    `;
+  let searchType = promptFor(message, isNumber1To3);
   let searchResults;
   switch (searchType) {
-    case "yes":
+    case 1:
       searchResults = searchByName(people);
       break;
-    case "no":
+    case 2:
       searchResults = singleSearchTrait(people);
-      if (searchResults.length === 1) {
-        searchResults = searchResults[0];
-      } else {
-        while (searchResults.length > 1) {
-          displayPeople(searchResults);
-          searchResults = singleSearchTrait(searchResults);
-        }
+      while (searchResults.length > 1) {
+        displayPeople(searchResults);
+        searchResults = singleSearchTrait(searchResults);
         searchResults = searchResults[0];
       }
       break;
@@ -239,10 +238,14 @@ function getRelatives(person, people) {
 
 function displayRelatives(person, people) {
   let result = getRelatives(person, people);
-  const spouse = `Spouse: ${result.currentSpouse || "None"}`
-  const parents = `Parents: ${result.parents.length > 0 ? [...result.parents] : "None"}`
-  const siblings = `Siblings: ${result.siblings.length > 0 ? [...result.siblings] : "None"}`
-  alert(spouse + '\n' + parents + '\n' + siblings);
+  const spouse = `Spouse: ${result.currentSpouse || "None"}`;
+  const parents = `Parents: ${
+    result.parents.length > 0 ? [...result.parents] : "None"
+  }`;
+  const siblings = `Siblings: ${
+    result.siblings.length > 0 ? [...result.siblings] : "None"
+  }`;
+  alert(spouse + "\n" + parents + "\n" + siblings);
 }
 
 function descendants(id, people) {
@@ -307,8 +310,8 @@ function displayPerson(person) {
 function promptFor(question, valid) {
   let isValid;
   do {
-    var response = prompt(question)
-    response = response ? response.trim() : 'poop'
+    var response = prompt(question);
+    response = response ? response.trim() : "poop";
     isValid = valid(response);
   } while (response === "" || isValid === false);
   return response;
@@ -333,9 +336,13 @@ function autoValid(input) {
 //can be used for things like eye color validation for example.
 function customValidation(input) {}
 
+function isNumber1To3(input) {
+  return input <= 3 && input >= 1 ? true : false;
+}
+
 function validateTraitNumbers(input) {
   let num = parseInt(input);
-  if (num >= 1 || num <= 7) {
+  if (num >= 1 && num <= 7) {
     return true;
   } else {
     return false;
