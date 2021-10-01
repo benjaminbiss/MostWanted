@@ -17,13 +17,33 @@
       <div class="container m-auto mt-4">
         <div class="row mt-4">
           <div class="col mt-4">
-            <button
-              type="button"
-              class="btn btn-outline-dark"
-              onclick="app(data)"
+            <div
+              class="btn-group"
+              role="group"
+              aria-label="Basic mixed styles example"
             >
-              Start Search
-            </button>
+              <button
+                type="button"
+                class="btn btn-outline-dark"
+                onclick="app(data)"
+              >
+                Start Search
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline-dark"
+                onclick="app(dataFiltered)"
+              >
+                Refine Search
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline-dark"
+                onclick="resetUI()"
+              >
+                Reset
+              </button>
+            </div>
           </div>
         </div>
         <div class="row mt-4">
@@ -35,7 +55,7 @@
           </div>
           <div class="col mt-4 border-solid" id="person">
             <h3>Person Info</h3>
-            <hr>
+            <hr />
             <label for="info" class="form-label">Information</label>
             <div class="input-group mb-3">
               <p

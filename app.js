@@ -4,6 +4,7 @@
 //Used for the overall flow of the application.
 /////////////////////////////////////////////////////////////////
 //#region
+let dataFiltered;
 
 // app is the function called to start the entire application
 function app(people) {
@@ -12,29 +13,24 @@ function app(people) {
     1: Search by name
     2: Search by single trait
     3: Search by multiple traits
+    4: Exit
     `;
-  let searchType = promptFor(message, isNumber1To3);
-  let searchResults;
+  let searchType = promptFor(message, isNumber1To4);
   switch (searchType) {
     case "1":
-      searchResults = searchByName(people);
+      dataFiltered = searchByName(people);
       break;
     case "2":
-      searchResults = singleSearchTrait(people);
-      while (searchResults.length > 1) {
-        displayPeople(searchResults);
-        searchResults = singleSearchTrait(searchResults);
-        searchResults = searchResults[0];
-      }
+      dataFiltered = searchSingleTrait(people);
       break;
     case "3":
-      searchResults = searchMultiTrait(people);
-    default:
-      app(people); // restart app
+      dataFiltered = searchMultiTrait(people);
+    case "4":
       break;
   }
-  // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
-  mainMenu(searchResults, people);
+  if (dataFiltered) {
+    generateList(dataFiltered);
+  }
 }
 
 // Menu function to call once you find who you are looking for
@@ -98,31 +94,15 @@ function searchByName(people) {
       return false;
     }
   });
-  foundPerson = foundPerson[0];
   return foundPerson;
 }
 
 //unfinished function to search through an array of people to find matching eye colors. Use searchByName as reference.
 
-function singleSearchTrait(people) {
-  let trait = promptFor(
-    "would you like to search by:\ngender\ndob\nheight\nweight\neyeColor\noccupation",
-    autoValid
-  );
-  let input = promptFor("Enter a value:", autoValid);
-  let filterArray = people.filter(function (object) {
-    if (String(object[trait]) === String(input)) {
-      return true;
-    } else if (Array.isArray(object[trait])) {
-      let numInput = input;
-      if (object[trait].includes(numInput)) {
-        return true;
-      }
-    } else {
-      return false;
-    }
-  });
-  return filterArray;
+function searchSingleTrait(people) {
+  let trait = getSearchTraits(1);
+  let value = getTraitValues(trait)[0];
+  return searchTrait(trait[0], value, people);
 }
 
 function searchTrait(trait, input, people) {
@@ -140,7 +120,7 @@ function searchTrait(trait, input, people) {
   return filterArray;
 }
 
-function getSearchTraits() {
+function getSearchTraits(qty) {
   const message = `
   Type the number of the trait you wish to by 
   Type one at a time and press enter:
@@ -157,6 +137,9 @@ function getSearchTraits() {
     input = promptFor(message, validateTraitNumbers);
     if (!traits.includes(input) && input != 7) {
       traits.push(input);
+    }
+    if (qty == 1) {
+      input = 7;
     }
   }
   return traits.sort((a, b) => a - b);
@@ -202,7 +185,7 @@ function getTraitValues(arr) {
 }
 
 function searchMultiTrait(people) {
-  let traits = getSearchTraits();
+  let traits = getSearchTraits("x");
   let traitValues = getTraitValues(traits);
   let results = people;
   for (const key in traitValues) {
@@ -213,7 +196,8 @@ function searchMultiTrait(people) {
 
 function getRelatives(person, people) {
   let allRelatives = {};
-  let spouse = searchTrait("currentSpouse", person.id, people)[0];
+  let spouse = searchTrait("currentSpouse", person.id, people);
+  console.log(spouse);
   if (spouse) {
     allRelatives.currentSpouse = spouse.firstName + " " + spouse.lastName;
   }
@@ -287,9 +271,7 @@ function displayPeople(people) {
 }
 
 function getPersonInfo(person) {
-  person = person[0];
-  let personInfo = `
-  First Name: ${person.firstName}
+  let personInfo = `First Name: ${person.firstName}
   Last Name: ${person.lastName}
   Gender: ${person.gender}
   Date of Birth: ${person.dob}
@@ -340,8 +322,8 @@ function autoValid(input) {
 //can be used for things like eye color validation for example.
 function customValidation(input) {}
 
-function isNumber1To3(input) {
-  return parseInt(input) <= 3 && parseInt(input) >= 1 ? true : false;
+function isNumber1To4(input) {
+  return parseInt(input) <= 4 && parseInt(input) >= 1 ? true : false;
 }
 
 function validateTraitNumbers(input) {
@@ -363,7 +345,6 @@ function generateList(arr) {
   let html = "";
   for (let i = 0; i < arr.length; i++) {
     const person = arr[i];
-    console.log(person);
     let listItem = `<li class="list-group-item"><p>${person.firstName}</p><button onClick="generatePersonData('${person.id}', data)">Show Data</button></li>`;
     html += listItem;
   }
@@ -371,9 +352,15 @@ function generateList(arr) {
 }
 
 function generatePersonData(id, people) {
-  let person = searchTrait("id", id, people);
+  let person = searchTrait("id", id, people)[0];
   let info = getPersonInfo(person);
   let family = getFamily(person, people);
   let descendants = getDescendants(id, people);
+  document.getElementById("info").innerText = info;
+  document.getElementById(
+    "family"
+  ).innerText = `${family.parents}\n${family.siblings}\n${family.spouse}`;
   console.log(info, family, descendants);
 }
+
+const resetUI = () => (document.getElementById("people").innerHTML = "");
