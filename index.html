@@ -9,17 +9,66 @@
       integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <main>
-      <div class="container mt-4">
+    <main class="text-center">
+      <h1 class="mt-4">Most Wanted</h1>
+      <div class="container m-auto mt-4">
         <div class="row mt-4">
           <div class="col mt-4">
-            <div class="btn-group mt-4" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-outline-primary" onclick="app(data)">Search By Name</button>
-                <button type="button" class="btn btn-outline-primary" onclick="app(data)">Single Trait Search</button>
-                <button type="button" class="btn btn-outline-primary" onclick="app(data)">Multiple Trait Search</button>
-              </div>
+            <button
+              type="button"
+              class="btn btn-outline-dark"
+              onclick="app(data)"
+            >
+              Start Search
+            </button>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col mt-4">
+            <div class="list border-solid">
+              <h3>List of Results</h3>
+              <ul id="people" class="list-group"></ul>
+            </div>
+          </div>
+          <div class="col mt-4 border-solid" id="person">
+            <h3>Person Info</h3>
+            <hr>
+            <label for="info" class="form-label">Information</label>
+            <div class="input-group mb-3">
+              <p
+                type="text"
+                class="form-control"
+                id="info"
+                aria-describedby="basic-addon3"
+              >
+                ---
+              </p>
+            </div>
+            <label for="family" class="form-label">Family</label>
+            <div class="input-group mb-3">
+              <p
+                type="text"
+                class="form-control"
+                id="family"
+                aria-describedby="basic-addon3"
+              >
+                ---
+              </p>
+            </div>
+            <label for="descendants" class="form-label">Descendants</label>
+            <div class="input-group mb-3">
+              <p
+                type="text"
+                class="form-control"
+                id="descendants"
+                aria-describedby="basic-addon3"
+              >
+                ---
+              </p>
+            </div>
           </div>
         </div>
       </div>

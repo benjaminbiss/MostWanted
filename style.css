@@ -1,0 +1,9 @@
+hr {
+    border-top: 10px solid #000;
+}
+.border-solid {
+    min-height: 500px;
+    border-radius: 3%;
+    border-style: solid;
+    border-color:black;
+}

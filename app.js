@@ -58,7 +58,7 @@ function mainMenu(person, people) {
       alert(displayPerson(person));
       break;
     case "family":
-      displayRelatives(person, people);
+      getFamily(person, people);
       break;
     case "descendants":
       let personID = person.id;
@@ -217,48 +217,52 @@ function getRelatives(person, people) {
   }
   allRelatives.parents = [];
   allRelatives.siblings = [];
-  for (let i = 0; i < person.parents.length; i++) {
-    let parent = searchTrait("id", person.parents[i], people)[0];
-    allRelatives.parents.push(parent.firstName + " " + parent.lastName);
-    let siblings = searchTrait("parents", person.parents[i], people);
-    for (let j = 0; j < siblings.length; j++) {
-      if (
-        !allRelatives.siblings.includes(
-          siblings[j].firstName + " " + siblings[j].lastName
-        )
-      ) {
-        allRelatives.siblings.push(
-          siblings[j].firstName + " " + siblings[j].lastName
-        );
+  if (person.parents) {
+    for (let i = 0; i < person.parents.length; i++) {
+      let parent = searchTrait("id", person.parents[i], people)[0];
+      allRelatives.parents.push(parent.firstName + " " + parent.lastName);
+      let siblings = searchTrait("parents", person.parents[i], people);
+      for (let j = 0; j < siblings.length; j++) {
+        if (
+          !allRelatives.siblings.includes(
+            siblings[j].firstName + " " + siblings[j].lastName
+          )
+        ) {
+          allRelatives.siblings.push(
+            siblings[j].firstName + " " + siblings[j].lastName
+          );
+        }
       }
     }
   }
   return allRelatives;
 }
 
-function displayRelatives(person, people) {
+function getFamily(person, people) {
   let result = getRelatives(person, people);
-  const spouse = `Spouse: ${result.currentSpouse || "None"}`;
-  const parents = `Parents: ${
+  let family = { spouse: "", parents: "", siblings: "" };
+  family.spouse = `Spouse: ${result.currentSpouse || "None"}`;
+  family.parents = `Parents: ${
     result.parents.length > 0 ? [...result.parents] : "None"
   }`;
-  const siblings = `Siblings: ${
+  family.siblings = `Siblings: ${
     result.siblings.length > 0 ? [...result.siblings] : "None"
   }`;
-  alert(spouse + "\n" + parents + "\n" + siblings);
+  return family;
+  //   alert(spouse + "\n" + parents + "\n" + siblings);
 }
 
-function descendants(id, people) {
-  let children = searchTrait("parents", id, people);
-  for (let i = 0; i < children.length; i++) {
-    let grandchildren = descendants(children[i].id, people);
-    children = [...children, ...grandchildren];
+function getDescendants(id, people) {
+  let descendants = searchTrait("parents", id, people);
+  for (let i = 0; i < descendants.length; i++) {
+    let children = getDescendants(descendants[i].id, people);
+    descendants = [...descendants, ...children];
   }
-  return children;
+  return descendants;
 }
 
 function displayDecendants(id, people) {
-  let allDescendants = descendants(id, people);
+  let allDescendants = getDescendants(id, people);
   return allDescendants;
 }
 
@@ -280,20 +284,18 @@ function displayPeople(people) {
   );
 }
 
-function displayPerson(person) {
-  // print all of the information about a person:
-  // height, weight, age, name, occupation, eye color.
-  let personInfo = "First Name: " + person.firstName + "\n";
-  personInfo += "Last Name: " + person.lastName + "\n";
-  personInfo += "Gender: " + person.gender + "\n";
-  personInfo += "Date of Birth: " + person.dob + "\n";
-  personInfo += "Height: " + person.height + "\n";
-  personInfo += "Weight: " + person.weight + "\n";
-  personInfo += "Eye Color: " + person.eyeColor + "\n";
-  personInfo += "Occupation: " + person.occupation + "\n";
-  personInfo += "Parents: " + person.parents + "\n";
-  personInfo += "Current Spouse: " + person.currentSpouse + "\n";
-  alert(personInfo);
+function getPersonInfo(person) {
+  person = person[0];
+  let personInfo = `
+  First Name: ${person.firstName}
+  Last Name: ${person.lastName}
+  Gender: ${person.gender}
+  Date of Birth: ${person.dob}
+  Height: ${person.height}
+  Weight: ${person.weight}
+  Eye Color: ${person.eyeColor}
+  Occupation: ${person.occupation}`;
+  return personInfo;
 }
 
 //#endregion
@@ -349,3 +351,27 @@ function validateTraitNumbers(input) {
   }
 }
 //#endregion
+
+//HTML Injection.
+//Functions to inject HTML based on results
+/////////////////////////////////////////////////////////////////
+//#region
+
+function generateList(arr) {
+  let html = "";
+  for (let i = 0; i < arr.length; i++) {
+    const person = arr[i];
+    console.log(person);
+    let listItem = `<li class="list-group-item"><p>${person.firstName}</p><button onClick="generatePersonData('${person.id}', data)">Show Data</button></li>`;
+    html += listItem;
+  }
+  document.getElementById("people").innerHTML = html;
+}
+
+function generatePersonData(id, people) {
+  let person = searchTrait("id", id, people);
+  let info = getPersonInfo(person);
+  let family = getFamily(person, people);
+  let descendants = getDescendants(id, people);
+  console.log(info, family, descendants);
+}
